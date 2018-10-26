@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
-import cPickle
+# import cPickle
+import pickle
 import os
 import re
 import sys
@@ -50,7 +51,7 @@ class Seq2seq():
         # 获取输入输出
         if os.path.isfile(self.data_map):
             with open(self.data_map, "rb") as f: 
-                data_map = cPickle.load(f)
+                data_map = pickle.load(f)
         else:
             p = Preprocess()
             p.main()
@@ -66,8 +67,8 @@ class Seq2seq():
         self.decoder_vocab_size = data_map.get("A_vocab_size")
         self.vec_to_char = {v:k for k,v in self.decoder_vocab.items()}
 
-        print "encoder_vocab_size {}".format(self.encoder_vocab_size)
-        print "decoder_vocab_size {}".format(self.decoder_vocab_size)
+        print ("encoder_vocab_size {}".format(self.encoder_vocab_size))
+        print ("decoder_vocab_size {}".format(self.decoder_vocab_size))
         self.model = DynamicSeq2seq(
             encoder_vocab_size=self.encoder_vocab_size+1,
             decoder_vocab_size=self.decoder_vocab_size+1,
@@ -109,7 +110,7 @@ class Seq2seq():
         total_time = 0
         nums_batch = len(batch_manager.batch_data)
         for epoch in range(self.max_epoch):
-            print "[->] epoch {}".format(epoch)   
+            print ("[->] epoch {}".format(epoch)   )
             batch_index = 0
             for batch in batch_manager.batch():
                 batch_index += 1
@@ -121,9 +122,9 @@ class Seq2seq():
                                     self.model.decoder_labels], fd)
                 loss_track.append(loss)
                 if batch_index % self.show_batch == 0:
-                    print "\tstep: {}/{}".format(batch_index, nums_batch)
-                    print '\tloss: {}'.format(loss)
-                    print "\t"+"-"*50
+                    print ("\tstep: {}/{}".format(batch_index, nums_batch))
+                    print ('\tloss: {}'.format(loss))
+                    print ("\t"+"-"*50)
                 checkpoint_path = self.model_path+"chatbot_seq2seq.ckpt"
                 # 保存模型
                 self.model.saver.save(self.sess, checkpoint_path, global_step=self.model.global_step)
@@ -157,12 +158,15 @@ class Seq2seq():
         p.main()
 
 if __name__ == '__main__':
-    if sys.argv[1]:
-        if sys.argv[1] == 'retrain':
-            clear()
-            sys.argv[1] = "train"
-        seq = Seq2seq()
-        if sys.argv[1] == 'train':
-            seq.train()
-        elif sys.argv[1] == 'infer':
-            print seq.predict("呵呵")  
+    # if sys.argv[1]:
+    #     if sys.argv[1] == 'retrain':
+    #         clear()
+    #         sys.argv[1] = "train"
+    #     seq = Seq2seq()
+    #     if sys.argv[1] == 'train':
+    #         seq.train()
+    #     elif sys.argv[1] == 'infer':
+    #         print( seq.predict("777") ）
+    seq = Seq2seq()
+    seq.train()
+    # seq.predict("777")

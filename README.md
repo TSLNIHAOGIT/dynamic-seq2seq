@@ -1,3 +1,5 @@
+
+#https://blog.csdn.net/yanwiicq/article/details/78296315
 # dynamic-seq2seq
 ## 欢迎关注我的另一个项目[基于Pytorch以及Beam Search算法的中文聊天机器人](https://github.com/yanwii/seq2seq)
 ### 基于中文语料和dynamic_rnn的seq2seq模型
